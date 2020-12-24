@@ -46,7 +46,7 @@ public class RankedChecker extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
-		setTitle("Koupah's Ranked Checker");
+		setTitle("Koupah's Ranked Checker v" + version);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
