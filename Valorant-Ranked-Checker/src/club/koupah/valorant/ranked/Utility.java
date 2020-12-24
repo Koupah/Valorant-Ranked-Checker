@@ -38,8 +38,8 @@ public class Utility {
 			Iterator<JsonElement> matchIterator = matches.iterator();
 			while (matchIterator.hasNext()) {
 				JsonObject m = matchIterator.next().getAsJsonObject();
-				if (m.get("CompetitiveMovement").getAsString().equals("MOVEMENT_UNKNOWN")) {
-					// out("Unrated: " + m.toString());
+				if (m.get("TierAfterUpdate").getAsInt() == 0 /* || m.get("CompetitiveMovement").getAsString().equals("MOVEMENT_UNKNOWN") THIS CAUSES FINAL PLACEMENT MATCH TO NOT SHOW*/ ) {
+					System.out.println("Unrated: " + m.toString());
 				} else {
 					new RankedGame(m);
 				}

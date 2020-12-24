@@ -2,8 +2,8 @@ package club.koupah.valorant.ranked.game;
 
 public enum ValorantMap {
 
-	Haven("/Game/Maps/Triad/Triad"),
-	Split("/Game/Maps/Bonsai/Bonsai"),
+	Haven("/Game/Maps/Triad/Triad"), //Triad, 3 sites? lol
+	Split("/Game/Maps/Bonsai/Bonsai"), //THIS should be called Duality
 	IceBox("/Game/Maps/Port/Port"),
 	Bind("/Game/Maps/Duality/Duality"),
 	Ascent("/Game/Maps/Ascent/Ascent"); //Only one with it's actual name??

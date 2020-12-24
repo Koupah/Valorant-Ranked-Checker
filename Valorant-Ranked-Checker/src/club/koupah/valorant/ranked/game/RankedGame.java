@@ -28,9 +28,13 @@ public class RankedGame extends JComponent {
 	ValorantRank beforeRank;
 	ValorantRank afterRank;
 
+	boolean placementGame;
+
 	public RankedGame(JsonObject m) {
 		beforeRank = ValorantRank.getRank(m.get("TierBeforeUpdate").getAsInt());
 		afterRank = ValorantRank.getRank(m.get("TierAfterUpdate").getAsInt());
+
+		placementGame = beforeRank.equals(ValorantRank.Unranked) && afterRank.tier > ValorantRank.Unranked.tier;
 
 		beforeElo = m.get("TierProgressBeforeUpdate").getAsInt();
 		afterElo = m.get("TierProgressAfterUpdate").getAsInt();
@@ -40,8 +44,8 @@ public class RankedGame extends JComponent {
 		map = ValorantMap.getMap(m.get("MapID").getAsString());
 
 		rankedGames.add(this);
-		
-		System.out.println(m.toString());
+
+		System.out.println("Ranked Game: " + m.toString());
 	}
 
 	Font rankFont = new Font("Tahoma", Font.PLAIN, 20);
@@ -69,7 +73,7 @@ public class RankedGame extends JComponent {
 		g.fillRect(0, 0, getWidth(), height);
 
 		g.setColor(rankDif == 0 ? Color.GRAY : (rankDif > 0 ? Color.GREEN : Color.RED));
-		
+
 		g.setStroke(new BasicStroke(4));
 		g.drawRect(0, 0, getWidth(), height);
 
@@ -87,11 +91,12 @@ public class RankedGame extends JComponent {
 		String map = "Map: " + this.map.properName;
 		g.drawString(map, 5, height - 38 - 2);
 
-		String progress = "Progress: " + afterElo + "/100 (" + difference + (difference >= 0 ? " gained" : " lost") + ")";
+		String progress = "Progress: " + afterElo + "/100 (" + ( placementGame ? "Final Placement" : difference + (difference >= 0 ? " gained" : " lost")) + ")";
 		g.drawString(progress, 5, height - 21 - 2);
-
-		String movement = "Movement: " + compMovement.replace("_", " ")
-				+ (rankDif != 0 ? " (" + beforeRank.name + " -> " + afterRank.name + ")" : "");
+		
+		String movement = "Movement: " + (placementGame ? "Final Placement (Received Rank!)"
+				: compMovement.replace("_", " ")
+						+ (rankDif != 0 ? " (" + beforeRank.name + " -> " + afterRank.name + ")" : ""));
 		g.drawString(movement, 5, height - 7);
 
 		/*

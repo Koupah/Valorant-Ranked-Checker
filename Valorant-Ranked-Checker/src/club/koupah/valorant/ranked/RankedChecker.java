@@ -11,7 +11,7 @@ import me.tewpingz.valorant.auth.ValRegion;
 
 public class RankedChecker extends JFrame {
 
-	double version = 0.1;
+	double version = 0.11;
 
 	private static final long serialVersionUID = -8694445418570903440L;
 
@@ -21,7 +21,7 @@ public class RankedChecker extends JFrame {
 	 * SCRAPPED TOGETHER IN AN HOUR OR SO
 	 * 
 	 */
-	
+
 	/*
 	 * Also everything is static because I'm too lazy to make getters & setters
 	 */
@@ -72,7 +72,7 @@ public class RankedChecker extends JFrame {
 				loginButton.setText("Logging In");
 
 				Utility.login();
-				
+
 				loginButton.setText(button);
 				loginButton.setEnabled(true);
 			}
