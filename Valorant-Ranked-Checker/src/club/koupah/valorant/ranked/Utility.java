@@ -31,10 +31,14 @@ public class Utility {
 		}
 
 		RankedGame.rankedGames.clear();
-
+		for (int i = 0; i < 3; i++) //60 games by default
 		try {
-			JsonObject compMatches = ValorantAPI.getCompetitiveHistory(auth, region);
+			JsonObject compMatches = ValorantAPI.getCompetitiveHistory(auth, region, i*20);
 			JsonArray matches = compMatches.getAsJsonArray("Matches");
+			
+			if (matches == null)
+				continue;
+			
 			Iterator<JsonElement> matchIterator = matches.iterator();
 			while (matchIterator.hasNext()) {
 				JsonObject m = matchIterator.next().getAsJsonObject();
@@ -46,7 +50,6 @@ public class Utility {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

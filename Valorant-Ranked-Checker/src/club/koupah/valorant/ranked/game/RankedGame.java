@@ -62,7 +62,11 @@ public class RankedGame extends JComponent {
 		int width = getWidth();
 
 		int rankDif = beforeRank.compare(afterRank);
+
 		int difference = (beforeRank.compare(afterRank) * 100) + (afterElo - beforeElo);
+
+		boolean rankChanged = rankDif != 0;
+		String rankTransition = beforeRank.name + " -> " + afterRank.name;
 
 		Graphics2D g = (Graphics2D) graphics;
 		super.paint(g);
@@ -79,8 +83,8 @@ public class RankedGame extends JComponent {
 
 		g.setFont(rankFont);
 		g.setColor(Color.WHITE);
-
-		g.drawString(beforeRank.name, (width / 2) - (g.getFontMetrics().stringWidth(beforeRank.name) / 2), 25);
+		g.drawString(rankChanged ? rankTransition : beforeRank.name,
+				(width / 2) - (g.getFontMetrics().stringWidth(rankChanged ? rankTransition : beforeRank.name) / 2), 25);
 
 		g.setFont(textFont);
 
@@ -91,12 +95,12 @@ public class RankedGame extends JComponent {
 		String map = "Map: " + this.map.properName;
 		g.drawString(map, 5, height - 38 - 2);
 
-		String progress = "Progress: " + afterElo + "/100 (" + ( placementGame ? "Final Placement" : difference + (difference >= 0 ? " gained" : " lost")) + ")";
+		String progress = "Progress: " + afterElo + "/100 ("
+				+ (placementGame ? "Final Placement" : difference + (difference >= 0 ? " gained" : " lost")) + ")";
 		g.drawString(progress, 5, height - 21 - 2);
-		
+
 		String movement = "Movement: " + (placementGame ? "Final Placement (Received Rank!)"
-				: compMovement.replace("_", " ")
-						+ (rankDif != 0 ? " (" + beforeRank.name + " -> " + afterRank.name + ")" : ""));
+				: compMovement.replace("_", " ") + (rankChanged ? " (" + rankTransition + ")" : ""));
 		g.drawString(movement, 5, height - 7);
 
 		/*

@@ -2,16 +2,18 @@ package club.koupah.valorant.ranked;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import me.tewpingz.valorant.auth.ValAuthentication;
 import me.tewpingz.valorant.auth.ValRegion;
 
 public class RankedChecker extends JFrame {
 
-	double version = 0.11;
+	double version = 0.12;
 
 	private static final long serialVersionUID = -8694445418570903440L;
 
@@ -107,7 +109,11 @@ public class RankedChecker extends JFrame {
 
 		fetchButton.setBounds(525, 5, 150, 40);
 		contentPane.add(fetchButton);
-
+		
+		/*
+		 * Need to add a JSpinner here to allow people to choose how many games to look back
+		 * Default will be 60 games
+		 */
 		scrollPane.setPreferredSize(rankPanel.getPreferredSize());
 		scrollPane.setWheelScrollingEnabled(true);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
