@@ -30,7 +30,7 @@ public enum ValorantRank {
 	}
 
 	public int compare(ValorantRank compareTo) {
-		return Math.abs(compareTo.tier - tier);
+		return compareTo.tier - tier;
 	}
 
 }
