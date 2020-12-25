@@ -5,7 +5,7 @@ import java.util.HashMap;
 public enum ValRegion {
 
 	NA("https://pd.na.a.pvp.net", "America"), EU("https://pd.eu.a.pvp.net", "Europe"),
-	AP("https://pd.ap.a.pvp.net", "Asia", "Oceania", "AU/NZ");
+	AP("https://pd.ap.a.pvp.net", "Asia", "Oceania", "AU/NZ"), KO("https://pd.ko.a.pvp.net", "Korea"), BR("https://pd.br.a.pvp.net", "Brazil");
 
 	private final String url;
 
