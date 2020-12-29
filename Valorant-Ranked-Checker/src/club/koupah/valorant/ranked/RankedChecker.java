@@ -92,24 +92,24 @@ public class RankedChecker extends JFrame {
 
 		fetchButton.setBounds(525, 5, 150, 40);
 		contentPane.add(fetchButton);
-		
+
 		final JSpinner matchCount = new JSpinner();
 		matchCount.setModel(new SpinnerNumberModel(40, 20, 200, 20));
 		matchCount.setBounds(460, 15, 50, 20);
 		((DefaultEditor) matchCount.getEditor()).getTextField().setEditable(false);
 		contentPane.add(matchCount);
-		
+
 		JLabel matchText = new JLabel("Matches to fetch: ");
 		matchText.setHorizontalAlignment(SwingConstants.RIGHT);
 		matchText.setBounds(320, 5, 130, 40);
 		contentPane.add(matchText);
-		
+
 		scrollPane.setPreferredSize(rankPanel.getPreferredSize());
 		scrollPane.setWheelScrollingEnabled(true);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setViewportView(rankPanel);
-		
+
 		fetchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

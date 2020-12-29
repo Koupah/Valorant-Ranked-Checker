@@ -19,118 +19,121 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 class Valorant {
 
-    private JsonParser jsonParser;
-    private CloseableHttpClient httpClient;
+	private CloseableHttpClient httpClient;
 
-    @SuppressWarnings("deprecation")
 	protected Valorant() {
-        this.jsonParser = new JsonParser();
-        try {
-            this.resetExecutor();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		try {
+			this.resetExecutor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    protected ValAuthentication auth(String username, String password) throws Exception {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("client_id", "play-valorant-web-prod");
-        jsonObject.addProperty("nonce", 1);
-        jsonObject.addProperty("redirect_uri", "https://beta.playvalorant.com/opt_in");
-        jsonObject.addProperty("response_type", "token id_token");
+	protected ValAuthentication auth(String username, String password) throws Exception {
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("client_id", "play-valorant-web-prod");
+		jsonObject.addProperty("nonce", 1);
+		jsonObject.addProperty("redirect_uri", "https://beta.playvalorant.com/opt_in");
+		jsonObject.addProperty("response_type", "token id_token");
 
-        this.post("https://auth.riotgames.com/api/v1/authorization", jsonObject.toString());
+		this.post("https://auth.riotgames.com/api/v1/authorization", jsonObject.toString());
 
-        JsonObject authObject = new JsonObject();
-        authObject.addProperty("type", "auth");
-        authObject.addProperty("username", username);
-        authObject.addProperty("password", password);
+		JsonObject authObject = new JsonObject();
+		authObject.addProperty("type", "auth");
+		authObject.addProperty("username", username);
+		authObject.addProperty("password", password);
 
-        JsonObject authResponse = this.put("https://auth.riotgames.com/api/v1/authorization", authObject.toString()).getAsJsonObject();
-        JsonObject responseObject = authResponse.get("response").getAsJsonObject();
-        JsonObject parametersObject = responseObject.get("parameters").getAsJsonObject();
-        String uri = String.valueOf(parametersObject.get("uri"));
-        String[] parts = uri.replace("https://beta.playvalorant.com/opt_in#", "").split("&");
-        String token = parts[0].replace("access_token=", "").replace("\"", "");
+		JsonObject authResponse = this.put("https://auth.riotgames.com/api/v1/authorization", authObject.toString())
+				.getAsJsonObject();
+		JsonObject responseObject = authResponse.get("response").getAsJsonObject();
+		JsonObject parametersObject = responseObject.get("parameters").getAsJsonObject();
+		String uri = String.valueOf(parametersObject.get("uri"));
+		String[] parts = uri.replace("https://beta.playvalorant.com/opt_in#", "").split("&");
+		String token = parts[0].replace("access_token=", "").replace("\"", "");
 
-        ValHeader authHeader = new ValHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+		ValHeader authHeader = new ValHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
-        JsonObject entitlementResponse = this.post("https://entitlements.auth.riotgames.com/api/token/v1", "{}", authHeader).getAsJsonObject();
-        String entitlementToken = entitlementResponse.get("entitlements_token").getAsString();
+		JsonObject entitlementResponse = this
+				.post("https://entitlements.auth.riotgames.com/api/token/v1", "{}", authHeader).getAsJsonObject();
+		String entitlementToken = entitlementResponse.get("entitlements_token").getAsString();
 
-        JsonObject userResponse = this.post("https://auth.riotgames.com/userinfo", "{}", authHeader).getAsJsonObject();
-        String userId = userResponse.get("sub").getAsString();
+		JsonObject userResponse = this.post("https://auth.riotgames.com/userinfo", "{}", authHeader).getAsJsonObject();
+		String userId = userResponse.get("sub").getAsString();
 
-        return new ValAuthentication(userId, token, entitlementToken);
-    }
+		return new ValAuthentication(userId, token, entitlementToken);
+	}
 
-    @SuppressWarnings("deprecation")
 	protected JsonElement get(String url, ValHeader... headers) throws IOException {
-        HttpGet httpGet = new HttpGet(url);
+		HttpGet httpGet = new HttpGet(url);
 
-        httpGet.setHeader("Accept", "application/json");
-        httpGet.setHeader("Content-type", "application/json");
+		httpGet.setHeader("Accept", "application/json");
+		httpGet.setHeader("Content-type", "application/json");
 
-        for (ValHeader header : headers){
-            if (header != null) {
-                httpGet.setHeader(header.getKey(), header.getValue());
-            }
-        }
+		for (ValHeader header : headers) {
+			if (header != null) {
+				httpGet.setHeader(header.getKey(), header.getValue());
+			}
+		}
 
-        CloseableHttpResponse response = this.httpClient.execute(httpGet);
-        String responseJSON = EntityUtils.toString(response.getEntity());
-        return this.jsonParser.parse(responseJSON);
-    }
+		CloseableHttpResponse response = this.httpClient.execute(httpGet);
+		String responseJSON = EntityUtils.toString(response.getEntity());
+		try {
+			return JsonParser.parseString(responseJSON);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Error getting your matches, try waiting 5 minutes?\nError for nerds: " + e.getMessage());
+			return null;
+		}
+	}
 
-    @SuppressWarnings("deprecation")
 	protected JsonElement post(String url, String json, ValHeader... headers) throws IOException {
-        HttpPost httpPost = new HttpPost(url);
-        StringEntity entity = new StringEntity(json);
-        httpPost.setEntity(entity);
+		HttpPost httpPost = new HttpPost(url);
+		StringEntity entity = new StringEntity(json);
+		httpPost.setEntity(entity);
 
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("Content-type", "application/json");
+		httpPost.setHeader("Accept", "application/json");
+		httpPost.setHeader("Content-type", "application/json");
 
-        for (ValHeader header : headers){
-            if (header != null) {
-                httpPost.setHeader(header.getKey(), header.getValue());
-            }
-        }
+		for (ValHeader header : headers) {
+			if (header != null) {
+				httpPost.setHeader(header.getKey(), header.getValue());
+			}
+		}
 
-        CloseableHttpResponse response = this.httpClient.execute(httpPost);
-        String responseJSON = EntityUtils.toString(response.getEntity());
-        return this.jsonParser.parse(responseJSON);
-    }
+		CloseableHttpResponse response = this.httpClient.execute(httpPost);
+		String responseJSON = EntityUtils.toString(response.getEntity());
+		return JsonParser.parseString(responseJSON);
+	}
 
-    @SuppressWarnings("deprecation")
 	protected JsonElement put(String url, String json, ValHeader... headers) throws IOException {
-        HttpPut httpPut = new HttpPut(url);
-        StringEntity entity = new StringEntity(json);
-        httpPut.setEntity(entity);
+		HttpPut httpPut = new HttpPut(url);
+		StringEntity entity = new StringEntity(json);
+		httpPut.setEntity(entity);
 
-        httpPut.setHeader("Accept", "application/json");
-        httpPut.setHeader("Content-type", "application/json");
+		httpPut.setHeader("Accept", "application/json");
+		httpPut.setHeader("Content-type", "application/json");
 
-        for (ValHeader header : headers){
-            if (header != null) {
-                httpPut.setHeader(header.getKey(), header.getValue());
-            }
-        }
+		for (ValHeader header : headers) {
+			if (header != null) {
+				httpPut.setHeader(header.getKey(), header.getValue());
+			}
+		}
 
-        CloseableHttpResponse response = this.httpClient.execute(httpPut);
-        String responseJSON = EntityUtils.toString(response.getEntity());
-        return this.jsonParser.parse(responseJSON);
-    }
+		CloseableHttpResponse response = this.httpClient.execute(httpPut);
+		String responseJSON = EntityUtils.toString(response.getEntity());
+		return JsonParser.parseString(responseJSON);
+	}
 
-    protected void resetExecutor() throws IOException {
-        if (this.httpClient != null){
-            this.httpClient.close();
-        }
+	protected void resetExecutor() throws IOException {
+		if (this.httpClient != null) {
+			this.httpClient.close();
+		}
 
-        this.httpClient = HttpClients.custom()
-                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
-                .build();
-    }
+		this.httpClient = HttpClients.custom()
+				.setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).build();
+	}
 }
