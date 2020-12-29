@@ -5,15 +5,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 
 import me.tewpingz.valorant.auth.ValAuthentication;
 import me.tewpingz.valorant.auth.ValRegion;
 
 public class RankedChecker extends JFrame {
 
-	double version = 0.12;
+	double version = 0.13;
 
 	private static final long serialVersionUID = -8694445418570903440L;
 
@@ -85,6 +90,26 @@ public class RankedChecker extends JFrame {
 
 		final JButton fetchButton = new JButton("Fetch Matches");
 
+		fetchButton.setBounds(525, 5, 150, 40);
+		contentPane.add(fetchButton);
+		
+		final JSpinner matchCount = new JSpinner();
+		matchCount.setModel(new SpinnerNumberModel(40, 20, 200, 20));
+		matchCount.setBounds(460, 15, 50, 20);
+		((DefaultEditor) matchCount.getEditor()).getTextField().setEditable(false);
+		contentPane.add(matchCount);
+		
+		JLabel matchText = new JLabel("Matches to fetch: ");
+		matchText.setHorizontalAlignment(SwingConstants.RIGHT);
+		matchText.setBounds(320, 5, 130, 40);
+		contentPane.add(matchText);
+		
+		scrollPane.setPreferredSize(rankPanel.getPreferredSize());
+		scrollPane.setWheelScrollingEnabled(true);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setViewportView(rankPanel);
+		
 		fetchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -98,7 +123,7 @@ public class RankedChecker extends JFrame {
 				new Thread() {
 					public void run() {
 
-						Utility.getRankedGames(auth, region);
+						Utility.getRankedGames(auth, region, (int) matchCount.getValue());
 						fetchButton.setText(button);
 						fetchButton.setEnabled(true);
 					}
@@ -106,19 +131,6 @@ public class RankedChecker extends JFrame {
 
 			}
 		});
-
-		fetchButton.setBounds(525, 5, 150, 40);
-		contentPane.add(fetchButton);
-		
-		/*
-		 * Need to add a JSpinner here to allow people to choose how many games to look back
-		 * Default will be 60 games
-		 */
-		scrollPane.setPreferredSize(rankPanel.getPreferredSize());
-		scrollPane.setWheelScrollingEnabled(true);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setViewportView(rankPanel);
 	}
 
 }

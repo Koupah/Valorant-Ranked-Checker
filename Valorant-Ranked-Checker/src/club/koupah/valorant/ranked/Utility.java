@@ -24,14 +24,14 @@ import me.tewpingz.valorant.auth.ValRegion;
 
 public class Utility {
 	
-	public static void getRankedGames(ValAuthentication auth, ValRegion region) {
+	public static void getRankedGames(ValAuthentication auth, ValRegion region, int matchCount) {
 		if (!RankedChecker.loggedIn || auth == null || region == null) {
 			JOptionPane.showMessageDialog(null, "You need to be logged in!");
 			return;
 		}
 
 		RankedGame.rankedGames.clear();
-		for (int i = 0; i < 3; i++) //60 games by default
+		for (int i = 0; i < (matchCount/20); i++) //60 games by default
 		try {
 			JsonObject compMatches = ValorantAPI.getCompetitiveHistory(auth, region, i*20);
 			JsonArray matches = compMatches.getAsJsonArray("Matches");
