@@ -10,4 +10,5 @@ I pulled this together in like an hour and a half after finding out you could se
 # Images  
 ![](images/RankedChecker.png)  
 ![](images/RankedCheckerLogin.png)  
-(Only 4 games show as I have only played 4 ranked games out of my last 10 or so games)
+  
+  If your/a region is missing, let me know so I can add it!
