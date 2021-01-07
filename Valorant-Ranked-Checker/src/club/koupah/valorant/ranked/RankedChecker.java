@@ -18,7 +18,7 @@ import me.tewpingz.valorant.auth.ValRegion;
 
 public class RankedChecker extends JFrame {
 
-	double version = 0.13;
+	double version = 0.14;
 
 	private static final long serialVersionUID = -8694445418570903440L;
 

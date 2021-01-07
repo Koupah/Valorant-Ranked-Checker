@@ -44,7 +44,7 @@ public class ValorantAPI {
        System.out.println("Fetching match " + startFrom + " to " + (startFrom+20));
    	 ValHeader authHeader = new ValHeader(HttpHeaders.AUTHORIZATION, "Bearer " + valAuthentication.getToken());
         ValHeader enHeader = new ValHeader("X-Riot-Entitlements-JWT", valAuthentication.getEntertainmentToken());
-        return valorantInstance.get(valRegion.getUrl() + "/mmr/v1/players/" + valAuthentication.getUniqueId() + "/competitiveupdates?startIndex=" + startFrom + "&endIndex=" + (startFrom+20),
+        return valorantInstance.get(valRegion.getURL() + "/mmr/v1/players/" + valAuthentication.getUniqueId() + "/competitiveupdates?startIndex=" + startFrom + "&endIndex=" + (startFrom+20),
                 authHeader, enHeader).getAsJsonObject();
     }
 }
