@@ -1,6 +1,15 @@
 # Valorant-Ranked-Checker
 Check your Valorant Rank, match history & see how long until you rank up!
+  
+<p align="center">
+<a href="https://github.com/Koupah/Valorant-Ranked-Checker/releases"><strong>Click me to go to the latest release</strong></a>  
+</p>  
+  
+<p align="center">
+<a href="https://github.com/Koupah/Valorant-Ranked-Checker/releases/download/0.14/Valorant-Ranked-Checker-v0.14.jar"><strong>Click me to download the Jar file directly</strong></a>  
+</p>  
 
+  
 Credit to Tewpingz for the Java Valorant API  
 Check him out here https://github.com/TewPingz  
 
